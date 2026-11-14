@@ -7,23 +7,15 @@ import { AppModule } from './app.module';
 import { attachAuthGuardDeps } from './common/guards';
 import { attachOpLogDeps } from './common/interceptors';
 import { PrismaService } from './prisma.service';
+import { resolveJwtExpiresIn, resolveJwtSecret } from './common/jwt-config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
 
-  // 生产硬化:检测演示用弱 JWT 密钥,避免带着默认密钥上生产
-  const jwtSecret = process.env.JWT_SECRET ?? '';
-  const isWeakSecret = !jwtSecret || jwtSecret.includes('change-me') || jwtSecret.length < 32;
-  if (isWeakSecret) {
-    const msg =
-      '[FM-Server] 安全告警: JWT_SECRET 未设置/过短(<32)/仍是演示值(change-me)。' +
-      '生产环境请在 .env 配置高强度随机密钥(如 openssl rand -base64 48 生成)。';
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error(msg + ' 检测到 NODE_ENV=production,拒绝启动。');
-    }
-    // eslint-disable-next-line no-console
-    console.warn(msg);
-  }
+  // 生产硬化:JWT 密钥强度校验(与 app.module 同一份逻辑,避免两处实现漂移)
+  // 生产环境密钥不合规 → 抛错拒绝启动;非生产 → 改用一次性随机密钥
+  resolveJwtSecret();
+  resolveJwtExpiresIn();
 
   // 关键:绕过 tsx 运行时 constructor 注入失效的坑(沙箱 100% 复现),
   // 在 app.listen() 之前显式把 JwtService / Reflector / PrismaService

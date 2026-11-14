@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from './prisma.service';
 import { JwtAuthGuard, PermsGuard } from './common/guards';
 import { AllExceptionsFilter, EnvelopeInterceptor, OperationLogInterceptor } from './common/interceptors';
+import { resolveJwtExpiresIn, resolveJwtSecret } from './common/jwt-config';
 import { AuthModule } from './modules/auth/auth.module';
 import { SystemModule } from './modules/system/system.module';
 import { MasterdataModule } from './modules/masterdata/masterdata.module';
@@ -31,8 +32,8 @@ export class CommonModule {}
     JwtModule.registerAsync({
       global: true,
       useFactory: () => ({
-        secret: process.env.JWT_SECRET || 'fm-dev-secret',
-        signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '2h' },
+        secret: resolveJwtSecret(),
+        signOptions: { expiresIn: resolveJwtExpiresIn() },
       }),
     }),
     AuthModule,

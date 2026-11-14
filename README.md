@@ -1,8 +1,8 @@
-# LedgerFlow · 中小企业财务管理系统
+# 通账 Tongzhang Books · 中小企业财务管理系统
 
 <div align="center">
 
-**LedgerFlow** — A lightweight, integrated finance platform built for SMEs, following the *Chinese SME Accounting Standards*.
+**通账 Tongzhang Books** — A lightweight, integrated finance platform built for SMEs, following the *Chinese SME Accounting Standards*.
 建账 → 凭证 → 账簿 → 报表 → 期末结账 · 一体化闭环 · 多账套 · RBAC · 全程留痕
 
 ![Node](https://img.shields.io/badge/Node.js-%E2%89%A520-339933?logo=node.js&logoColor=white)
@@ -206,6 +206,8 @@ pg_restore -h 127.0.0.1 -U $PGUSER -d financial_mgmt --clean backup.dump
 ## 安全说明(交付默认值,生产请调整)
 
 - JWT 密钥、数据库口令在 `.env`,上线前必须修改;建议启用 HTTPS 反向代理;
+- `NODE_ENV=production` 时,若 `JWT_SECRET` 未设置、长度不足 32 位、或仍为演示值(`change-me` / `fm-dev-secret`),服务**拒绝启动**;非生产环境会改用一次性随机密钥(每次重启不同),不再有固定兜底值。生成密钥:`openssl rand -base64 48`;
+- 演示账号(`admin` / `cfo` / `zhangsan` / `lisi` / `wangwu` / `boss`)仅在非生产环境自动创建;`NODE_ENV=production` 下必须显式设置 `SEED_DEMO_ACCOUNTS=true` 才会写入,且生产环境**不应**使用这些默认密码;
 - 附件限 jpg/png/pdf ≤10MB;密码 bcrypt 存储;连续错登锁定、敏感操作留痕;
 - 出纳无审核权、制单人不能 self-approve(系统硬约束,符合不相容岗位分离)。
 
@@ -214,10 +216,21 @@ pg_restore -h 127.0.0.1 -U $PGUSER -d financial_mgmt --clean backup.dump
 - 工资核算、税务测算提示、金税对接、现金流量表完整版、移动端 App 未包含在一期(见开发文档 §14 决策点);
 - 发票为登记台账模式,不做开票/查验集成。
 
+## 许可证
+
+本项目采用 **Apache License 2.0** 开源,完整条款见 [LICENSE](LICENSE)。
+
+- 你可以自由地商业使用、修改、再分发本项目,包括闭源二次开发与对外销售;
+- 分发时必须保留 `LICENSE` 与 `NOTICE` 文件,并注明修改内容;
+- Apache-2.0 包含**明示专利授权**,并提供对专利诉讼的终止条款;
+- 项目内第三方组件各自遵循其原许可证,清单见 [NOTICE](NOTICE);CI 会在每次构建时校验该清单,若引入 GPL / AGPL / SSPL / BUSL 等限制性许可证会直接失败。
+
+商标说明:「通账 / Tongzhang Books」为项目名称与品牌标识,不在 Apache-2.0 授权范围内,使用时请勿误导他人为官方产品。
+
 ---
 
 <div align="center">
 
-**LedgerFlow** · 让每一笔账都清晰可信
+**通账 Tongzhang Books** · 让每一笔账都清晰可信
 
 </div>

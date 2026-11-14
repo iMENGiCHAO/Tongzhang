@@ -116,7 +116,7 @@ router.beforeEach((to) => {
 
 router.afterEach((to) => {
   const title = (to.meta?.title as string) || ''
-  document.title = title ? `${title} · LedgerFlow` : 'LedgerFlow · 中小企业财务管理系统'
+  document.title = title ? `${title} · 通账 Tongzhang Books` : '通账 Tongzhang Books · 中小企业财务管理系统'
 })
 
 export default router

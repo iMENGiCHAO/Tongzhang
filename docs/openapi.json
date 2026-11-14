@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "LedgerFlow API",
+    "title": "通账 Tongzhang Books API",
     "version": "1.0.0",
     "description": "中小企业财务管理系统 REST API。AI 智能体接入推荐使用 MCP(见 docs/MCP-GUIDE.md);本文件供 Function Calling / 代码生成生态使用。"
   },

@@ -1,6 +1,6 @@
-# LedgerFlow MCP 接入指南(AI 智能体)
+# 通账 Tongzhang Books MCP 接入指南(AI 智能体)
 
-LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor、Windsurf 等任何支持 MCP 的智能体,接入后可直接用自然语言**查账、出报表、记账**——相当于给你的 AI 装上一个财务记账员。
+通账 Tongzhang Books 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor、Windsurf 等任何支持 MCP 的智能体,接入后可直接用自然语言**查账、出报表、记账**——相当于给你的 AI 装上一个财务记账员。
 
 ## 能做什么(10 个工具)
 
@@ -21,7 +21,7 @@ LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor
 
 ## 前置条件
 
-1. LedgerFlow 后端已运行(默认 http://127.0.0.1:3100);
+1. 通账 Tongzhang Books 后端已运行(默认 http://127.0.0.1:3100);
 2. 准备一个**专用账号**(建议:系统管理 → 用户管理 → 新建用户,角色给「会计」或自定义只读角色,密码强随机)。不要把管理员账号给智能体;
 3. 完成 server 端构建:`cd server && pnpm build`(产物 dist/mcp/server.js)。
 
@@ -32,7 +32,7 @@ LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor
 ```json
 {
   "mcpServers": {
-    "ledgerflow": {
+    "tongzhang": {
       "command": "node",
       "args": ["/Users/你的用户名/DeepSeek/FinancialManagement/server/dist/mcp/server.js"],
       "env": {
@@ -54,7 +54,7 @@ LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor
 ```json
 {
   "mcpServers": {
-    "ledgerflow": {
+    "tongzhang": {
       "command": "node",
       "args": ["server/dist/mcp/server.js"],
       "env": {
@@ -70,7 +70,7 @@ LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor
 ## 通用(其他 MCP 客户端)
 
 - 传输方式:stdio
-- 服务名:ledgerflow v1.0.0
+- 服务名:tongzhang v1.0.0
 - 启动命令:`node server/dist/mcp/server.js`
 - 环境变量:`MCP_API_BASE`(API 地址)/ `MCP_USERNAME` / `MCP_PASSWORD`
 - 本地自检:`cd server && node scripts/mcp-smoke.mjs`(需后端在运行)
@@ -81,3 +81,22 @@ LedgerFlow 内置 **MCP Server**(Model Context Protocol),Claude Desktop、Cursor
 - **同权同审计**:智能体走的每个请求与 Web 前端完全同链路(JWT 鉴权、RBAC、操作日志),越权行为在服务端被同样拒绝;
 - **建议专用账号 + 最小权限**:只读需求给只读角色;不把 CFO/管理员账号交给智能体;
 - 密码只写在 MCP 客户端配置(本机),不经任何第三方。
+
+---
+
+## 从 ledgerflow 改名为 tongzhang 的说明
+
+项目原名 LedgerFlow,现更名为 **通账 Tongzhang Books**。MCP server 的服务名同步由
+ledgerflow 改为 tongzhang。
+
+**已有客户端配置需同步更新**,否则 Claude Desktop / Cursor 会提示找不到该 MCP server:
+
+```json
+{
+  "mcpServers": {
+    "tongzhang": { "command": "node", "args": ["..."] }
+  }
+}
+```
+
+只需把配置里的 key 从 ledgerflow 改为 tongzhang,command / args 不变。

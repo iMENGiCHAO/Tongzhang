@@ -1,0 +1,77 @@
+Tongzhang Books (通账 · Tongzhang Books)
+Copyright 2026 iMENGiCHAO
+
+This product includes software developed by third-party open source
+projects, each governed by its own license as listed below. The full text
+of the Apache License, Version 2.0 is included in the LICENSE file at the
+repository root.
+
+--------------------------------------------------------------------------
+Server runtime dependencies
+--------------------------------------------------------------------------
+
+@electric-sql/pglite                 Apache-2.0
+@electric-sql/pglite-socket          Apache-2.0
+@modelcontextprotocol/sdk             MIT
+@nestjs/common                       MIT
+@nestjs/core                         MIT
+@nestjs/jwt                          MIT
+@nestjs/platform-express              MIT
+@prisma/client                       Apache-2.0
+bcryptjs                             MIT
+class-transformer                     MIT
+class-validator                      MIT
+exceljs                              MIT
+reflect-metadata                     Apache-2.0
+rxjs                                 Apache-2.0
+zod                                  MIT
+
+--------------------------------------------------------------------------
+Web runtime dependencies
+--------------------------------------------------------------------------
+
+@element-plus/icons-vue              MIT
+axios                                MIT
+dayjs                                MIT
+echarts                              Apache-2.0
+element-plus                         MIT
+pinia                                MIT
+vue                                  MIT
+vue-router                           MIT
+
+--------------------------------------------------------------------------
+Build and test toolchain
+--------------------------------------------------------------------------
+
+@vitejs/plugin-vue                   MIT
+puppeteer-core                       Apache-2.0
+sass                                 MIT
+typescript                           Apache-2.0
+unplugin-auto-import                 MIT
+unplugin-vue-components              MIT
+vite                                 MIT
+prisma                               Apache-2.0
+tsx                                  MIT
+
+--------------------------------------------------------------------------
+Assets and fonts
+--------------------------------------------------------------------------
+
+This repository does not bundle any third-party font files, icon sets,
+photographs, or other media assets. The screenshots under docs/screenshots/
+are captures of this project's own user interface. The web client uses the
+host operating system font stack (see web/src/style.css) and the icon set
+supplied by @element-plus/icons-vue at build time.
+
+--------------------------------------------------------------------------
+Notes
+--------------------------------------------------------------------------
+
+Dependency licenses above were verified against the npm registry on
+2026-11-15. The CI workflow includes a license gate that re-verifies this
+inventory and fails the build if a copyleft or otherwise restrictive
+license (GPL, AGPL, SSPL, BUSL, or unlicensed) is introduced.
+
+The Apache License, Version 2.0 requires that recipients of a derivative
+work receive this NOTICE file and retain the attribution notices contained
+within this file.

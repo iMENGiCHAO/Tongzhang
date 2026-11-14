@@ -4,6 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 import { PrismaService } from '../../prisma.service';
 import { TokenBlacklist } from '../../common/token-blacklist';
+import { resolveJwtExpiresIn } from '../../common/jwt-config';
 
 /** 登录限流:内存版(单进程适用;集群环境应改 Redis)
  *  - 3 次失败 → 锁定 1 分钟
@@ -58,7 +59,7 @@ export class AuthService {
       isSuper: user.isSuper,
       perms,
     };
-    const accessToken = this.jwt.sign(payload, { expiresIn: process.env.JWT_EXPIRES_IN || '2h' });
+    const accessToken = this.jwt.sign(payload, { expiresIn: resolveJwtExpiresIn() });
     const refreshToken = this.jwt.sign({ ...payload, jti: refreshJti }, { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' });
     return {
       accessToken,

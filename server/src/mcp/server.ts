@@ -1,5 +1,5 @@
 /**
- * LedgerFlow MCP Server — 让 AI 智能体(Claude / Cursor / 任意 Agent)通过
+ * 通账 Tongzhang Books MCP Server — 让 AI 智能体(Claude / Cursor / 任意 Agent)通过
  * Model Context Protocol 直接查询账务、生成报表、录入凭证。
  *
  * 形态:stdio 传输,独立进程(不影响 Nest 主服务);
@@ -26,7 +26,7 @@ let token: string | null = null;
 
 async function login(): Promise<string> {
   if (!MCP_USERNAME || !MCP_PASSWORD) {
-    throw new Error('未配置 MCP_USERNAME / MCP_PASSWORD 环境变量,无法登录 LedgerFlow');
+    throw new Error('未配置 MCP_USERNAME / MCP_PASSWORD 环境变量,无法登录 通账 Tongzhang Books');
   }
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
@@ -55,7 +55,7 @@ async function api(method: string, path: string, body?: unknown): Promise<any> {
   }
   const json: any = await res.json().catch(() => ({}) as any);
   if (json?.code !== 0) {
-    throw new Error(`LedgerFlow API ${method} ${path} 失败:${json?.message || `HTTP ${res.status}`}`);
+    throw new Error(`通账 Tongzhang Books API ${method} ${path} 失败:${json?.message || `HTTP ${res.status}`}`);
   }
   return json.data;
 }
@@ -72,7 +72,7 @@ const money = z.number().describe('金额,单位元,保留两位小数');
 const subjectCode = z.string().describe('末级科目编码,如 100201(工商银行基本户)、560204(管理费用-工资)');
 
 async function buildServer(): Promise<McpServer> {
-  const server = new McpServer({ name: 'ledgerflow', version: '1.0.0' });
+  const server = new McpServer({ name: 'tongzhang', version: '1.0.0' });
 
   // ---------- 查询类 ----------
 
@@ -268,7 +268,7 @@ async function buildServer(): Promise<McpServer> {
         }),
       });
       return reply(
-        `凭证已保存为草稿(单号 ${data?.word || '记'}-${data?.no}),请登录 LedgerFlow 由有审核权限的用户提交审核后记账。`,
+        `凭证已保存为草稿(单号 ${data?.word || '记'}-${data?.no}),请登录 通账 Tongzhang Books 由有审核权限的用户提交审核后记账。`,
         data,
       );
     },
@@ -284,10 +284,10 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   // stdio 模式下日志只能走 stderr,stdout 属于协议信道
-  console.error(`[LedgerFlow MCP] 已启动: ${API_BASE}(user: ${MCP_USERNAME})`);
+  console.error(`[通账 Tongzhang Books MCP] 已启动: ${API_BASE}(user: ${MCP_USERNAME})`);
 }
 
 main().catch((e) => {
-  console.error('[LedgerFlow MCP] 启动失败:', e.message);
+  console.error('[通账 Tongzhang Books MCP] 启动失败:', e.message);
   process.exit(1);
 });

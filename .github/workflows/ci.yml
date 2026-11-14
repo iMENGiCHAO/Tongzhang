@@ -100,3 +100,34 @@ jobs:
 
       - name: 生产构建
         run: pnpm build
+
+  license:
+    name: 许可证门禁(Apache-2.0 + 依赖 copyleft 检查)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 安装后端依赖(供许可证扫描)
+        working-directory: server
+        run: |
+          pnpm install --frozen-lockfile || true
+          pnpm approve-builds --all || true
+          pnpm install --frozen-lockfile
+
+      - name: 安装前端依赖(供许可证扫描)
+        working-directory: web
+        run: |
+          pnpm install --frozen-lockfile || true
+          pnpm approve-builds --all || true
+          pnpm install --frozen-lockfile
+
+      - name: 校验 LICENSE / NOTICE 与依赖许可证
+        run: node scripts/check-licenses.mjs

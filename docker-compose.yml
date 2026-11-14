@@ -1,4 +1,4 @@
-# LedgerFlow 一键栈:PostgreSQL + 后端 API + 前端(Nginx)
+# 通账 Tongzhang Books 一键栈:PostgreSQL + 后端 API + 前端(Nginx)
 # 用法:docker compose up -d → 浏览器打开 http://localhost:8080
 # 演示数据:DEMO_MODE=1 docker compose up -d(首次建库后灌种子)
 services:
@@ -20,9 +20,14 @@ services:
     build: ./server
     environment:
       DATABASE_URL: postgresql://ledger:ledger_pg_pw_change_me@db:5432/financial_mgmt?schema=public
-      JWT_SECRET: change_me_to_random_48_bytes_in_production
+      # JWT 密钥必须 >= 32 位且不含 change-me / fm-dev-secret。
+      # 留空时后端会生成一次性随机密钥(每次容器重启变化,已登录 token 失效)。
+      # 生产部署请用 .env 传入固定强密钥,例如: JWT_SECRET=$(openssl rand -base64 48)
+      JWT_SECRET: "${JWT_SECRET:-}"
       PORT: "3100"
       DEMO_MODE: "${DEMO_MODE:-0}"
+      # 演示数据开关:仅 DEMO_MODE=1 时才灌入演示账号与业务数据
+      SEED_DEMO_ACCOUNTS: "${SEED_DEMO_ACCOUNTS:-}"
     depends_on:
       db:
         condition: service_healthy

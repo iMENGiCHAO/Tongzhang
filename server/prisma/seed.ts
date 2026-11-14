@@ -17,6 +17,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { PRESET_SUBJECTS, ROLE_PRESETS, ALL_PERMS } from '../src/constants/master-data';
 import { REPORT_PRESETS } from '../src/constants/report-formulas';
+import { demoDataSkipNotice, shouldSeedDemoData } from '../src/common/seed-account-guard';
 
 const prisma = new PrismaClient();
 const d = (s: string) => new Date(`${s}T00:00:00.000Z`);
@@ -44,6 +45,15 @@ async function main() {
       create: { code: rp.code, name: rp.name, permissions: perms, remark: rp.remark },
     });
     roleMap.set(rp.code, role.id);
+  }
+
+  // 生产门控:演示账号密码固定且公开可猜,且演示业务数据(凭证/报销/审批流)以这些账号的
+  // userId 为外键,二者必须整体开关。生产环境默认只保留角色/报表公式等基础配置。
+  if (!shouldSeedDemoData()) {
+    console.warn(demoDataSkipNotice());
+    console.log(`  角色已就绪(${roleMap.size} 个): ${[...roleMap.keys()].join(', ')}`);
+    console.log('== 种子完成(生产模式:已跳过演示账号与演示业务数据)==');
+    return;
   }
 
   const users: { username: string; password: string; realName: string; roleCode: string; isSuper?: boolean; deptCode?: string }[] = [
