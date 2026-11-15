@@ -17,9 +17,10 @@ async function bootstrap() {
   resolveJwtSecret();
   resolveJwtExpiresIn();
 
-  // 关键:绕过 tsx 运行时 constructor 注入失效的坑(沙箱 100% 复现),
+  // 关键:绕过 tsx 运行时的 constructor 依赖注入失效问题,
   // 在 app.listen() 之前显式把 JwtService / Reflector / PrismaService
   // 注入到 Guard / Interceptor 的模块级单例。
+  // 详见 common/guards.ts 顶部说明。
   attachAuthGuardDeps(
     app.get(JwtService, { strict: false }),
     app.get(Reflector, { strict: false }),

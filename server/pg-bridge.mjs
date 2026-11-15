@@ -1,8 +1,8 @@
 /**
  * PGlite TCP 桥
  *
- * 目的:在 DeepSeek Harness 沙箱（禁止 fork 多线程进程、PG 服务无法启动）下,
- *       把 PGlite (WASM PG) 暴露成 PG 协议,让 Prisma 完全无感使用。
+ * 目的:在无法启动本机 PostgreSQL 服务的受限环境下,
+ *       把 PGlite (WASM PostgreSQL) 暴露成 PG 协议,让 Prisma 完全无感使用。
  *
  * 使用:
  *   node pg-bridge.mjs          # 启动后台进程,持久化到 ./pg-data

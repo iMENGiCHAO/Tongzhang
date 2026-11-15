@@ -7,11 +7,11 @@ import { IS_PUBLIC_KEY, PERM_KEY, SessionUser } from './decorators';
 import { TokenBlacklist } from './token-blacklist';
 
 /**
- * 关键设计:tsx 运行时 constructor 依赖注入(基于 reflect-metadata)有坑
- * (在 Harness 沙箱里 100% 复现 undefined),所以 Guard 不再用 NestJS DI,
- * 而是 main.ts 在 app.listen() 之前调用 attachAuthGuardDeps(jwt, reflector)
- * 把依赖注入到模块级单例,Guard 直接读这些单例。
- * 这是经过沙箱反复验证最稳的写法,不要改成 constructor 注入。
+ * 关键设计:tsx 运行时的 constructor 依赖注入(基于 reflect-metadata)存在不稳定性,
+ * 表现为 Guard 构造时拿到的依赖为 undefined。因此 Guard 不使用 NestJS DI,
+ * 而是由 main.ts 在 app.listen() 之前调用 attachAuthGuardDeps(jwt, reflector),
+ * 把依赖注入到模块级单例,Guard 直接读取这些单例。
+ * 这是当前最稳定的写法,请勿改回 constructor 注入。
  */
 let _jwt: JwtService | null = null;
 let _reflector: Reflector | null = null;

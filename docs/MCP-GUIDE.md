@@ -34,7 +34,7 @@
   "mcpServers": {
     "tongzhang": {
       "command": "node",
-      "args": ["/Users/你的用户名/DeepSeek/FinancialManagement/server/dist/mcp/server.js"],
+      "args": ["/Users/你的用户名/DeepSeek/Tongzhang/server/dist/mcp/server.js"],
       "env": {
         "MCP_API_BASE": "http://127.0.0.1:3100/api/v1",
         "MCP_USERNAME": "ai-agent",

@@ -1,9 +1,9 @@
 /**
  * Vite 插件:MOCK 后端 API
- * 仅在沙箱环境（PG 不可用）下使用：拦截 /api/v1/* 返回静态 mock 数据
- * 让前端 24 个页面 100% 可见可交互，零改动验收视觉/交互/空态。
+ * 仅用于后端数据库不可用时进行前端单独开发:拦截 /api/v1/* 返回静态 mock 数据,
+ * 让前端 24 个页面 100% 可见可交互,零改动验收视觉/交互/空态。
  *
- * 一旦后端 PG 启动成功，删除 vite.config.ts 里此插件的引用即可恢复。
+ * 一旦后端 PostgreSQL 启动成功,删除 vite.config.ts 里此插件的引用即可恢复。
  */
 import type { Plugin } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
